@@ -1,0 +1,47 @@
+{% extends 'detector/base.html' %}
+
+{% block title %}Search | Aether AI Health{% endblock %}
+
+{% block content %}
+<section class="panel glass-card">
+    <div class="section-header">
+        <div>
+            <span class="eyebrow">Search hub</span>
+            <h1>Find uploads and predictions instantly</h1>
+            <p>Search by filename, category, or detected condition.</p>
+        </div>
+    </div>
+
+    <form method="get" class="search-form">
+        {{ form.query }}
+        <button class="button-primary" type="submit">Search</button>
+    </form>
+
+    {% if results %}
+        <div class="table-wrap">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>File</th>
+                        <th>Category</th>
+                        <th>Prediction</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for upload in results %}
+                        <tr>
+                            <td>{{ upload.original_filename }}</td>
+                            <td>{% if upload.category %}{{ upload.category.name }}{% else %}Unknown{% endif %}</td>
+                            <td>{{ upload.prediction_text }}</td>
+                            <td>{{ upload.uploaded_at }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% elif form.is_bound %}
+        <p class="empty-state">No results found for your search.</p>
+    {% endif %}
+</section>
+{% endblock %}

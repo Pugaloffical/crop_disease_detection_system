@@ -1,0 +1,30 @@
+{% extends 'detector/base.html' %}
+
+{% block title %}Weather | LeafDoctor AI{% endblock %}
+
+{% block content %}
+<section class="panel glass-card weather-shell">
+    <div class="section-header">
+        <div>
+            <span class="eyebrow">Weather insights</span>
+            <h1>Weather-based disease risk and seasonal alerts.</h1>
+            <p>Monitor crop risk and stay ahead of plant diseases with weather-aware guidance.</p>
+        </div>
+    </div>
+
+    <div class="weather-grid">
+        <div class="feature-card hover-elevate">
+            <h3>Current risk</h3>
+            <p>{{ risk_level }}</p>
+        </div>
+        <div class="feature-card hover-elevate">
+            <h3>Season alerts</h3>
+            <ul>
+                {% for alert in season_alerts %}
+                    <li>{{ alert }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'detector/base.html' %}
+
+{% block title %}Gallery | Aether AI Health{% endblock %}
+
+{% block content %}
+<section class="panel glass-card">
+    <div class="section-header">
+        <div>
+            <span class="eyebrow">Image gallery</span>
+            <h1>Recent scans</h1>
+            <p>A polished visual gallery of your latest uploaded detections.</p>
+        </div>
+        <a class="button-primary" href="{% url 'home' %}">Upload new image</a>
+    </div>
+
+    <div class="gallery-grid">
+        {% for upload in uploads %}
+            <article class="gallery-card">
+                {% if upload.image %}
+                    <img src="{{ upload.image.url }}" alt="{{ upload.original_filename }}" class="gallery-image">
+                {% endif %}
+                <div class="gallery-body">
+                    <h3>{% if upload.category %}{{ upload.category.name }}{% else %}Unknown category{% endif %}</h3>
+                    <p>{{ upload.prediction_text }}</p>
+                    <a class="text-link" href="{% url 'result' upload.id %}">View result</a>
+                </div>
+            </article>
+        {% empty %}
+            <p class="empty-state">No uploads available yet. Start by uploading an image.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

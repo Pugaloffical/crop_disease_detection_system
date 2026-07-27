@@ -1,0 +1,36 @@
+{% extends 'detector/base.html' %}
+
+{% block title %}Disease Catalog | Aether AI Health{% endblock %}
+
+{% block content %}
+<section class="panel glass-card">
+    <div class="section-header">
+        <div>
+            <span class="eyebrow">Catalog</span>
+            <h1>Curated disease reference</h1>
+            <p>Explore disease profiles across all supported categories.</p>
+        </div>
+    </div>
+
+    {% for category in categories %}
+        <div class="catalog-category glass-card">
+            <div class="catalog-title">
+                <h2>{{ category.name }}</h2>
+                <p>{{ category.description }}</p>
+            </div>
+            <div class="disease-list">
+                {% for disease in category.diseases.all %}
+                    <a class="catalog-card" href="{% url 'disease_detail' disease.slug %}">
+                        <h3>{{ disease.name }}</h3>
+                        <p>{{ disease.description|truncatechars:120 }}</p>
+                    </a>
+                {% empty %}
+                    <p class="empty-state">No diseases added yet for this category.</p>
+                {% endfor %}
+            </div>
+        </div>
+    {% empty %}
+        <p class="empty-state">No categories configured. Please configure admin categories first.</p>
+    {% endfor %}
+</section>
+{% endblock %}

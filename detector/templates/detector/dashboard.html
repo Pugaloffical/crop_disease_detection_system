@@ -1,0 +1,85 @@
+{% extends 'detector/base.html' %}
+
+{% block title %}Dashboard | LeafDoctor AI{% endblock %}
+
+{% block content %}
+<section class="panel glass-card dashboard-hero">
+    <div class="dashboard-header">
+        <div>
+            <span class="eyebrow">LeafDoctor dashboard</span>
+            <h1>Welcome back. Your crop health analytics are ready.</h1>
+            <p>Review recent scans, disease trends, and smart action guidance in one place.</p>
+        </div>
+        <div class="summary-pill">
+            <span>Recent uploads</span>
+            <strong>{{ uploads.count }}</strong>
+        </div>
+    </div>
+
+    <div class="dashboard-grid">
+        <div class="metric-card">
+            <p>Total Scans</p>
+            <strong>{{ uploads.count }}</strong>
+            <span>Tracked sessions</span>
+        </div>
+        <div class="metric-card">
+            <p>Healthy Plants</p>
+            <strong>{{ uploads.exclude(predicted_disease=None).filter(predicted_disease__slug='healthy').count }}</strong>
+            <span>Clear diagnosis</span>
+        </div>
+        <div class="metric-card">
+            <p>Diseased Plants</p>
+            <strong>{{ uploads.exclude(predicted_disease=None).count }}</strong>
+            <span>Needs attention</span>
+        </div>
+        <div class="metric-card">
+            <p>Top Disease</p>
+            <strong>{{ top_disease }}</strong>
+            <span>Most frequent issue</span>
+        </div>
+    </div>
+</section>
+
+<section class="panel glass-card chart-card">
+    <div class="chart-header">
+        <h2>Latest disease trends</h2>
+        <p>Current detection spread from your most recent scans.</p>
+    </div>
+    <div class="chart-grid">
+        <div class="donut-chart">
+            <div class="donut-center">AI</div>
+        </div>
+        <div class="chart-legend">
+            <div><span class="legend-dot dot-1"></span>Late blight</div>
+            <div><span class="legend-dot dot-2"></span>Rust</div>
+            <div><span class="legend-dot dot-3"></span>Powdery mildew</div>
+            <div><span class="legend-dot dot-4"></span>Leaf spot</div>
+        </div>
+    </div>
+</section>
+
+<section class="panel glass-card">
+    <div class="section-header">
+        <div>
+            <h2>Recent activity</h2>
+            <p>Review the latest scans and outcomes from your LeafDoctor workflow.</p>
+        </div>
+        <a class="text-link" href="{% url 'gallery' %}">View full gallery</a>
+    </div>
+    {% if uploads %}
+        <div class="activity-list">
+            {% for upload in uploads|slice:":6" %}
+                <div class="activity-item">
+                    <div>
+                        <strong>{{ upload.original_filename }}</strong>
+                        <p>{% if upload.category %}{{ upload.category.name }}{% else %}Unknown{% endif %} • {{ upload.prediction_text }}</p>
+                    </div>
+                    <span>{{ upload.uploaded_at }}</span>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="empty-state">You have not uploaded any scans yet. <a href="{% url 'scanner' %}">Start scanning</a>.</p>
+    {% endif %}
+</section>
+{% endblock %}

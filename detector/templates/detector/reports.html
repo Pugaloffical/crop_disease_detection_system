@@ -1,0 +1,38 @@
+{% extends 'detector/base.html' %}
+
+{% block title %}Reports | LeafDoctor AI{% endblock %}
+
+{% block content %}
+<section class="panel glass-card reports-shell">
+    <div class="section-header">
+        <div>
+            <span class="eyebrow">Reports</span>
+            <h1>Download your latest scan reports.</h1>
+            <p>Review recent diagnoses and export details for plant health tracking.</p>
+        </div>
+    </div>
+
+    <div class="table-wrap">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>File</th>
+                    <th>Category</th>
+                    <th>Prediction</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for upload in uploads %}
+                    <tr>
+                        <td>{{ upload.original_filename }}</td>
+                        <td>{% if upload.category %}{{ upload.category.name }}{% else %}Unknown{% endif %}</td>
+                        <td>{{ upload.prediction_text }}</td>
+                        <td>{{ upload.uploaded_at }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}
