@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | LeafDoctor AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="dashboard-page">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+
+    <nav class="navbar dashboard-nav">
+        <a href="index.html" class="logo-link">
+            <div class="logo">🌿 LeafDoctor AI</div>
+        </a>
+        <div class="nav-links">
+            <span class="user-greeting">Welcome, User</span>
+            <a href="index.html" class="btn btn-outline" onclick="alert('Logged out successfully')">Logout</a>
+        </div>
+    </nav>
+
+    <main class="dashboard-container">
+        <div class="dashboard-sidebar glass-card">
+            <ul class="sidebar-menu">
+                <li class="active"><a href="#">📷 New Scan</a></li>
+                <li><a href="#">📚 Disease Library</a></li>
+                <li><a href="#">📊 Scan History</a></li>
+                <li><a href="#">⚙️ Settings</a></li>
+            </ul>
+        </div>
+
+        <div class="dashboard-content">
+            <div class="scanner-interface glass-card">
+                <div class="scanner-header">
+                    <h2>Crop Disease Scanner</h2>
+                    <p>Upload a clear photo of the infected leaf for instant AI analysis.</p>
+                </div>
+                
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-icon">⬆️</div>
+                    <h3>Drag & Drop or Click to Upload</h3>
+                    <p>Supports JPG, PNG, WEBP</p>
+                    <input type="file" id="fileInput" hidden accept="image/*">
+                    <button class="btn btn-primary mt-2" onclick="document.getElementById('fileInput').click()">Select Image</button>
+                </div>
+
+                <div class="analysis-results" id="resultsArea" style="display: none;">
+                    <h3>Analysis Complete</h3>
+                    <div class="result-card">
+                        <div class="result-row">
+                            <span>Detected Crop:</span>
+                            <strong>Tomato</strong>
+                        </div>
+                        <div class="result-row">
+                            <span>Condition:</span>
+                            <strong class="danger">Late Blight (Phytophthora infestans)</strong>
+                        </div>
+                        <div class="result-row">
+                            <span>Confidence:</span>
+                            <strong class="success">98.5%</strong>
+                        </div>
+                    </div>
+                    
+                    <div class="treatment-plan">
+                        <h4>Recommended Action:</h4>
+                        <p>1. Immediately remove and destroy affected leaves.<br>
+                           2. Apply a copper-based fungicide to prevent spreading.<br>
+                           3. Ensure proper spacing between plants for airflow.</p>
+                    </div>
+
+                    <button class="btn btn-secondary mt-2" onclick="resetScanner()">Scan Another Leaf</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+    <script>
+        // Mock scanner logic
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            if(this.files && this.files[0]) {
+                const uploadArea = document.getElementById('uploadArea');
+                const resultsArea = document.getElementById('resultsArea');
+                
+                uploadArea.innerHTML = '<h3>Analyzing... 🤖</h3><div class="scan-line-active"></div>';
+                
+                setTimeout(() => {
+                    uploadArea.style.display = 'none';
+                    resultsArea.style.display = 'block';
+                }, 2000);
+            }
+        });
+
+        function resetScanner() {
+            document.getElementById('resultsArea').style.display = 'none';
+            document.getElementById('uploadArea').style.display = 'flex';
+            document.getElementById('uploadArea').innerHTML = `
+                <div class="upload-icon">⬆️</div>
+                <h3>Drag & Drop or Click to Upload</h3>
+                <p>Supports JPG, PNG, WEBP</p>
+                <button class="btn btn-primary mt-2" onclick="document.getElementById('fileInput').click()">Select Image</button>
+            `;
+            document.getElementById('fileInput').value = "";
+        }
+    </script>
+</body>
+</html>
